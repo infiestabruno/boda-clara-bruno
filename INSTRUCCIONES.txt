@@ -1,0 +1,6 @@
+1. Abre tu Google Sheet y ve a Extensiones > Apps Script.
+2. Pega el contenido de apps-script.gs. Guarda.
+3. Implementar > Nueva implementación > Aplicación web. Ejecutar como: Yo. Quién tiene acceso: Cualquier persona. Autoriza.
+4. Copia la URL que termina en /exec y reemplaza PEGAR_URL_DE_APPS_SCRIPT_AQUI en script.js.
+5. Publica index.html, script.js, fotos/ e ilustraciones/ en GitHub Pages. NO publiques apps-script.gs si prefieres mantenerlo fuera del repositorio (aunque no contiene claves).
+6. Haz una respuesta de prueba y comprueba la hoja. El formulario abre la confirmación del servidor en una pestaña nueva.
