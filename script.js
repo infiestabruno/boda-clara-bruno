@@ -37,18 +37,41 @@ if(copy)copy.addEventListener('click',async()=>{
 });
 
 
-// Carrusel de fotos: botones y deslizamiento táctil nativo.
+// Carrusel editorial, accesible mediante flechas, teclado y gestos.
 (function(){
  const track=document.getElementById('historyCarousel');
  if(!track)return;
- const cards=[...track.querySelectorAll('figure')];
- const counter=document.getElementById('carouselCount');
- function current(){const middle=track.scrollLeft+track.clientWidth/2;let best=0,dist=Infinity;cards.forEach((c,i)=>{const d=Math.abs(c.offsetLeft-track.offsetLeft+c.offsetWidth/2-middle);if(d<dist){dist=d;best=i}});return best}
- function goto(i){const card=cards[Math.max(0,Math.min(cards.length-1,i))];if(card)track.scrollTo({left:card.offsetLeft-track.offsetLeft-(track.clientWidth-card.offsetWidth)/2,behavior:'smooth'})}
- function refresh(){if(counter)counter.textContent=(current()+1)+' / '+cards.length}
- document.querySelector('.carousel-prev')?.addEventListener('click',()=>goto(current()-1));
- document.querySelector('.carousel-next')?.addEventListener('click',()=>goto(current()+1));
- track.addEventListener('scroll',refresh,{passive:true});
- track.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){e.preventDefault();goto(current()-1)}if(e.key==='ArrowRight'){e.preventDefault();goto(current()+1)}});
- refresh();
+ const cards=Array.from(track.querySelectorAll('figure'));
+ const count=document.getElementById('carouselCount');
+ const progress=document.getElementById('carouselProgress');
+ const prev=document.querySelector('.carousel-prev');
+ const next=document.querySelector('.carousel-next');
+ let active=0;
+ const centerOf=(el)=>el.offsetLeft+el.offsetWidth/2;
+ function closest(){
+  const mid=track.scrollLeft+track.clientWidth/2;
+  let index=0, min=Infinity;
+  cards.forEach((card,i)=>{const d=Math.abs(centerOf(card)-mid);if(d<min){min=d;index=i;}});
+  return index;
+ }
+ function render(){
+  active=closest();
+  cards.forEach((card,i)=>card.classList.toggle('is-active',i===active));
+  if(count)count.textContent=(active+1)+' / '+cards.length;
+  if(progress)progress.style.width=((active+1)/cards.length*100)+'%';
+  if(prev)prev.disabled=active===0;
+  if(next)next.disabled=active===cards.length-1;
+ }
+ function go(i){
+  const target=cards[Math.max(0,Math.min(cards.length-1,i))];
+  if(!target)return;
+  track.scrollTo({left:centerOf(target)-track.clientWidth/2,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+ }
+ prev?.addEventListener('click',()=>go(active-1));
+ next?.addEventListener('click',()=>go(active+1));
+ track.addEventListener('scroll',()=>requestAnimationFrame(render),{passive:true});
+ track.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){e.preventDefault();go(active-1);}else if(e.key==='ArrowRight'){e.preventDefault();go(active+1);}});
+ window.addEventListener('resize',render);
+ cards.forEach((c,i)=>c.addEventListener('click',()=>go(i)));
+ requestAnimationFrame(()=>{go(0);render();});
 })();
