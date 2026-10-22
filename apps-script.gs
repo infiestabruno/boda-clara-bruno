@@ -13,11 +13,19 @@ function doPost(e) {
     const attending = p.asiste === 'si';
     if (name.length < 3 || name.length > 160 || !['si','no'].includes(p.asiste)) throw Error('Datos incompletos');
     const withGuest = attending && p.plus === 'si';
+    if (attending && !['si','no'].includes(p.plus)) throw Error('Acompañante sin respuesta');
+    if (attending && !['si','no'].includes(p.bus)) throw Error('Autocar sin respuesta');
+    if (attending && !['si','no'].includes(p.alergiaEstado)) throw Error('Alergias sin respuesta');
     const guestName = withGuest ? String(p.acompanante || '').trim() : '';
     if (withGuest && guestName.length < 3) throw Error('Falta el nombre del acompañante');
-    const inbound = attending ? Math.max(0, Math.min(2, Number(p.plazasIda)||0)) : 0;
-    const outbound = attending ? Math.max(0, Math.min(2, Number(p.plazasVuelta)||0)) : 0;
-    if (!Number.isInteger(inbound)||!Number.isInteger(outbound)) throw Error('Número de plazas no válido');
+    if (withGuest && !['si','no'].includes(p.alergiaPlusEstado)) throw Error('Faltan alergias del acompañante');
+    if (attending && p.alergiaEstado === 'si' && !String(p.alergias||'').trim()) throw Error('Describe tus alergias');
+    if (withGuest && p.alergiaPlusEstado === 'si' && !String(p.alergiasPlus||'').trim()) throw Error('Describe las alergias del acompañante');
+    if (attending && p.bus === 'si' && (!['ida','vuelta','ida-vuelta'].includes(p.trayecto) || !['1','2'].includes(String(p.plazas)))) throw Error('Datos de autocar incompletos');
+    const seats = attending && p.bus === 'si' ? Number(p.plazas) : 0;
+    if (seats > (withGuest ? 2 : 1)) throw Error('Demasiadas plazas solicitadas');
+    const inbound = attending && p.bus === 'si' && ['ida','ida-vuelta'].includes(p.trayecto) ? seats : 0;
+    const outbound = attending && p.bus === 'si' && ['vuelta','ida-vuelta'].includes(p.trayecto) ? seats : 0;
     const nonce = String(p.nonce||'').slice(0,128);
     const lock = LockService.getScriptLock();lock.waitLock(30000);
     try {
@@ -34,7 +42,7 @@ function doPost(e) {
       };
       sheet.appendRow([
         new Date(),clean(name,160),attending?'Sí':'No',withGuest?'Sí':'No',clean(guestName,160),
-        attending?clean(p.alergias,500):'',withGuest?clean(p.alergiasPlus,500):'',
+        attending&&p.alergiaEstado==='si'?clean(p.alergias,500):'',withGuest&&p.alergiaPlusEstado==='si'?clean(p.alergiasPlus,500):'',
         inbound,outbound,'',nonce
       ]);
       return reply('¡Muchas gracias! Hemos recibido vuestra confirmación.');
