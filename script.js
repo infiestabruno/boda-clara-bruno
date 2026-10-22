@@ -1,34 +1,52 @@
 const asiste=document.getElementById('asiste');
 const plus=document.getElementById('plus');
 const bus=document.getElementById('bus');
+const alergiaEstado=document.getElementById('alergiaEstado');
+const alergiaPlusEstado=document.getElementById('alergiaPlusEstado');
 const form=document.getElementById('rsvpForm');
 const estado=document.getElementById('estado');
-// Replace this URL with your deployed Apps Script /exec URL to activate RSVP.
-const APPS_SCRIPT_URL = 'PEGAR_URL_DE_APPS_SCRIPT_AQUI';
+// Se activará exclusivamente cuando se configure la URL real /exec de Apps Script.
+const APPS_SCRIPT_URL='PEGAR_URL_DE_APPS_SCRIPT_AQUI';
+const byId=id=>document.getElementById(id);
 function refresh(){
- const attending=asiste.value==='si';
- const companion=attending&&plus.value==='si';
- document.getElementById('extra').classList.toggle('hidden',!attending);
- document.getElementById('nombrePlus').classList.toggle('hidden',!companion);
- document.getElementById('alergiasAcompanante').classList.toggle('hidden',!companion);
- document.getElementById('busInfo').classList.toggle('hidden',!attending||bus.value==='no');
- document.getElementById('acompanante').required=companion;
- document.getElementById('plazas').disabled=!attending||bus.value==='no';
- document.getElementById('trayecto').disabled=!attending||bus.value==='no';
+ const attending=asiste.value==='si', companion=attending&&plus.value==='si', usingBus=attending&&bus.value==='si';
+ byId('extra').classList.toggle('hidden',!attending);
+ byId('nombrePlus').classList.toggle('hidden',!companion);
+ byId('alergiasAcompanante').classList.toggle('hidden',!companion);
+ byId('busInfo').classList.toggle('hidden',!usingBus);
+ byId('alergiasDetalle').classList.toggle('hidden',!attending||alergiaEstado.value!=='si');
+ byId('alergiasPlusDetalle').classList.toggle('hidden',!companion||alergiaPlusEstado.value!=='si');
+ byId('acompanante').required=companion;
+ byId('alergias').required=attending&&alergiaEstado.value==='si';
+ byId('alergiasPlus').required=companion&&alergiaPlusEstado.value==='si';
+ alergiaPlusEstado.required=companion;
+ for(const id of ['plus','bus','alergiaEstado'])byId(id).disabled=!attending;
+ for(const id of ['plazas','trayecto']){byId(id).disabled=!usingBus;byId(id).required=usingBus;}
+ if(!companion){alergiaPlusEstado.value='';byId('alergiasPlus').value='';byId('acompanante').value='';}
+ if(!usingBus){byId('plazas').value='';byId('trayecto').value='';}
+ if(!attending){plus.value='';bus.value='';alergiaEstado.value='';byId('alergias').value='';}
 }
-[asiste,plus,bus].forEach(el=>el.addEventListener('change',refresh));refresh();
+[asiste,plus,bus,alergiaEstado,alergiaPlusEstado].forEach(el=>el.addEventListener('change',refresh));refresh();
 form.addEventListener('submit',e=>{
- if(!APPS_SCRIPT_URL.startsWith('https://script.google.com/macros/s/')){
-  e.preventDefault();estado.textContent='Todavía falta configurar Google Apps Script. No se ha guardado ninguna respuesta.';return;
+ e.preventDefault();
+ const name=byId('nombre').value.trim().replace(/\\s+/g,' ');
+ if(name.length<3){byId('nombre').setCustomValidity('Escribe tu nombre y apellidos.');byId('nombre').reportValidity();return;}else byId('nombre').setCustomValidity('');
+ if(!form.reportValidity())return;
+ if(asiste.value==='si'){
+  if(!plus.value||!bus.value||!alergiaEstado.value){estado.textContent='Responde conscientemente a todas las preguntas.';return;}
+  if(plus.value==='si'&&(!alergiaPlusEstado.value||byId('acompanante').value.trim().length<3)){estado.textContent='Completa los datos del acompañante.';return;}
+  if((alergiaEstado.value==='si'&&!byId('alergias').value.trim())||(plus.value==='si'&&alergiaPlusEstado.value==='si'&&!byId('alergiasPlus').value.trim())){estado.textContent='Describe las alergias indicadas.';return;}
  }
- if(!form.reportValidity()){e.preventDefault();return;}
- const seats=(asiste.value==='si'&&bus.value==='si')?Number(document.getElementById('plazas').value):0;
- const trip=document.getElementById('trayecto').value;
- document.getElementById('plazasIda').value=seats&&(trip==='ida'||trip==='ida-vuelta')?seats:0;
- document.getElementById('plazasVuelta').value=seats&&(trip==='vuelta'||trip==='ida-vuelta')?seats:0;
- document.getElementById('nonce').value=crypto.randomUUID?crypto.randomUUID():String(Date.now());
+ if(!APPS_SCRIPT_URL.startsWith('https://script.google.com/macros/s/')||!APPS_SCRIPT_URL.endsWith('/exec')){estado.textContent='Formulario en preparación. No se ha enviado ni guardado ninguna respuesta.';return;}
+ const seats=(asiste.value==='si'&&bus.value==='si')?Number(byId('plazas').value):0;
+ const trip=byId('trayecto').value;
+ if(bus.value==='si'&&(seats<1||seats> (plus.value==='si'?2:1)||!trip)){estado.textContent='Comprueba las plazas y el trayecto del autocar.';return;}
+ byId('plazasIda').value=seats&&(trip==='ida'||trip==='ida-vuelta')?seats:0;
+ byId('plazasVuelta').value=seats&&(trip==='vuelta'||trip==='ida-vuelta')?seats:0;
+ byId('nonce').value=crypto.randomUUID?crypto.randomUUID():String(Date.now());
  form.action=APPS_SCRIPT_URL;
- estado.textContent='Se abrirá una página de Google con el resultado del envío. Comprueba el mensaje de confirmación.';
+ form.submit();
+ estado.textContent='Se ha abierto la página de confirmación de Google. Comprueba que indique que los datos se han guardado.';
 });
 const copy=document.querySelector('.copy');
 if(copy)copy.addEventListener('click',async()=>{
