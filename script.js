@@ -35,3 +35,20 @@ if(copy)copy.addEventListener('click',async()=>{
  try{await navigator.clipboard.writeText('ES5515830001189104760915');copy.textContent='¡IBAN copiado!'}
  catch(e){copy.textContent='Selecciona el IBAN para copiarlo'}
 });
+
+
+// Carrusel de fotos: botones y deslizamiento táctil nativo.
+(function(){
+ const track=document.getElementById('historyCarousel');
+ if(!track)return;
+ const cards=[...track.querySelectorAll('figure')];
+ const counter=document.getElementById('carouselCount');
+ function current(){const middle=track.scrollLeft+track.clientWidth/2;let best=0,dist=Infinity;cards.forEach((c,i)=>{const d=Math.abs(c.offsetLeft-track.offsetLeft+c.offsetWidth/2-middle);if(d<dist){dist=d;best=i}});return best}
+ function goto(i){const card=cards[Math.max(0,Math.min(cards.length-1,i))];if(card)track.scrollTo({left:card.offsetLeft-track.offsetLeft-(track.clientWidth-card.offsetWidth)/2,behavior:'smooth'})}
+ function refresh(){if(counter)counter.textContent=(current()+1)+' / '+cards.length}
+ document.querySelector('.carousel-prev')?.addEventListener('click',()=>goto(current()-1));
+ document.querySelector('.carousel-next')?.addEventListener('click',()=>goto(current()+1));
+ track.addEventListener('scroll',refresh,{passive:true});
+ track.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){e.preventDefault();goto(current()-1)}if(e.key==='ArrowRight'){e.preventDefault();goto(current()+1)}});
+ refresh();
+})();
