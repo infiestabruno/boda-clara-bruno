@@ -71,7 +71,7 @@
 .timeline-new .moment-icon{display:flex;align-items:center;justify-content:center;line-height:1}
 .timeline-new .moment-icon svg{display:block;width:22px;height:22px}
 @media(max-width:1000px){
- .timeline-new .moment-icon{top:0;left:18px}
+
  .timeline-new .moment-icon svg{width:19px;height:19px}
 }
 @media(max-width:760px){
@@ -113,7 +113,7 @@ nav{justify-content:center;flex-wrap:wrap;text-align:center;gap:18px 42px}nav .m
 .hero-content{text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}.hero-content .lead{margin-left:auto;margin-right:auto}.hero h1{text-align:center}
 .locations-section>.section-head,.story>h2,.story>.section-head,.schedule>h2,.schedule>.section-head,#informacion>h2,#informacion>.section-head{text-align:center}
 .places{gap:clamp(35px,7vw,110px)}.place{text-align:center;align-items:center}.place .eyebrow{font-size:11px;letter-spacing:.12em}.place-title{font-size:clamp(19px,2.1vw,27px);line-height:1.4;margin:4px auto 12px}.place-intro{max-width:37ch;margin:12px auto!important;line-height:1.75}.venue-address{font-size:14px;font-weight:600;color:var(--navy)!important;max-width:40ch;margin:18px auto 5px!important}.access-details{width:100%;text-align:center;min-height:0!important;display:flex;flex-direction:column;align-items:center}.access-details p{max-width:42ch}.place .arrival-warning,.place .venue-note{max-width:42ch;margin:20px auto!important}.place .venue-note{font-size:13px;color:var(--muted)}.places .place-illustration{object-fit:contain}
-.story-genesis-copy{text-align:center;margin:auto}.story-genesis-copy p{text-align:center}.schedule>.arrival-warning{max-width:660px;margin:18px auto 30px!important;text-align:center}.schedule>.note{text-align:center}.practical article{text-align:center}.practical{align-items:start}.rsvp>div{text-align:center}.rsvp form{width:100%;max-width:540px;margin:0 auto}.gift-copy{text-align:center;display:flex;flex-direction:column;align-items:center}.gift-copy h2{max-width:20ch}.gift-copy p{max-width:45ch}.iban{width:100%;max-width:480px;text-align:center}.iban p#iban{font-family:'DM Sans',Arial,sans-serif;font-size:clamp(15px,2vw,21px);letter-spacing:.03em;overflow-wrap:anywhere}.footer-logo{margin:0 auto 12px}
+.story-genesis-copy{text-align:center;margin:auto}.schedule>.arrival-warning{max-width:660px;margin:18px auto 30px!important;text-align:center}.schedule>.note{text-align:center}.practical article{text-align:center}.practical{align-items:start}.rsvp>div{text-align:center}.rsvp form{width:100%;max-width:540px;margin:0 auto}.gift-copy{text-align:center;display:flex;flex-direction:column;align-items:center}.gift-copy h2{max-width:20ch}.gift-copy p{max-width:45ch}.iban{width:100%;max-width:480px;text-align:center}.iban p#iban{font-family:'DM Sans',Arial,sans-serif;font-size:clamp(15px,2vw,21px);letter-spacing:.03em;overflow-wrap:anywhere}.footer-logo{margin:0 auto 12px}
 .story-gallery{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;gap:18px;padding:10px 4px 20px;scrollbar-width:thin;align-items:center}.story-gallery figure{flex:0 0 clamp(250px,44vw,560px);scroll-snap-align:center;display:grid;place-items:center}.story-gallery img{width:100%;height:auto;max-height:480px;object-fit:contain}.carousel-shell{display:grid;grid-template-columns:46px minmax(0,1fr) 46px;gap:8px;align-items:center;margin-top:40px}.carousel-arrow{border:1px solid #b9b1a9;background:transparent;color:var(--navy);font-size:32px;line-height:1;width:44px;height:44px;cursor:pointer;border-radius:50%;align-self:center}.carousel-arrow:hover{background:var(--navy);color:white}.carousel-help{text-align:center;color:var(--muted);font-size:12px}
 @media(max-width:760px){nav{justify-content:center}nav .brand-logo{width:64px;height:64px}.story-gallery figure{flex-basis:82vw}.story-gallery img{max-height:65vh}.carousel-shell{grid-template-columns:30px minmax(0,1fr) 30px;gap:3px}.carousel-arrow{height:30px;width:30px;font-size:24px}.place .access-details p{text-align:center}.gift-copy{align-items:center}.iban{margin-left:auto;margin-right:auto}.place-intro,.venue-address{max-width:100%}.story-genesis-copy p{text-align:center}}
 
@@ -147,29 +147,80 @@ nav .tree-monogram .tree-art{opacity:1;filter:none}nav .tree-monogram .tree-lett
 /* Refinamiento monograma: más compacto y próximo al inicio */
 nav:has(.tree-monogram){padding-top:0;padding-bottom:0;margin-bottom:-22px;justify-content:center}nav .tree-monogram{width:155px;height:155px;flex:0 0 155px}nav .tree-monogram .tree-art{width:100%;height:100%;opacity:.77;filter:none}nav .links{position:absolute;right:max(5vw,24px)}@media(max-width:760px){nav:has(.tree-monogram){margin-bottom:-42px}nav .tree-monogram{width:138px;height:138px;flex:0 0 138px}.hero-content{padding-top:42px}}
 
-/* Refinamiento responsive móvil: tipografía, ritmo y cortes de línea */
-.nowrap{white-space:nowrap}
-html,body{max-width:100%;overflow-x:clip}
+
+/* V33 · Consolidación responsive, sin alterar el diseño de escritorio.
+   El timeline comparte un único sistema geométrico en tablet y móvil. */
+html{overflow-x:clip}
+body{overflow-x:clip}
+img,svg{max-width:100%}
 section{min-width:0}
-.schedule>.arrival-warning{box-sizing:border-box;width:100%;max-width:660px;padding:16px clamp(14px,3.8vw,22px);font-size:clamp(14px,1.5vw,17px);line-height:1.65;text-wrap:pretty}
-.schedule>.arrival-warning strong{font-weight:600}
-@media(max-width:760px){
- section{padding:58px clamp(18px,5vw,28px)}
- .schedule>.arrival-warning{font-size:clamp(13px,3.65vw,16px);padding:14px 12px;margin:14px auto 24px!important;line-height:1.58;letter-spacing:-.015em}
- .schedule>h2,.story>h2,#informacion>h2{font-size:clamp(32px,8.6vw,52px);line-height:1.12;letter-spacing:-.04em;text-wrap:balance}
- .section-head{font-size:10px;letter-spacing:.16em;line-height:1.5}
- .timeline.timeline-new{margin-left:7px;margin-top:32px}
- .timeline-new .timeline-event{padding-left:42px;padding-bottom:22px}
- .timeline-new .moment-body{padding:4px 0}
- .timeline-new .moment-body h3{font-size:clamp(14px,4vw,17px);line-height:1.35}
- .timeline-new .moment-body p{font-size:clamp(12px,3.5vw,14px);line-height:1.55;text-wrap:pretty}
- .timeline-new .journey .moment-body{padding:10px 12px}
- .story-chapter p,.story-genesis-copy p{font-size:clamp(14px,3.8vw,16px);line-height:1.78;text-wrap:pretty}
- .rsvp{gap:24px}.rsvp form{padding:18px;min-width:0}.rsvp input,.rsvp select,.rsvp textarea{min-width:0;max-width:100%;font-size:16px}
- .gift-copy{padding:42px 6vw}.gift-copy h2{font-size:clamp(28px,7vw,39px);line-height:1.24;text-wrap:balance}
- .iban p#iban{letter-spacing:0;font-size:clamp(13px,3.8vw,17px)}
+.nowrap{white-space:nowrap}
+.story-genesis-copy>p:not(.eyebrow),.story-chapter>p{text-align:left}
+.story-genesis-copy>.eyebrow,.story-genesis-copy>h3,
+.story-chapter>.eyebrow,.story-chapter>h3{text-align:center}
+.story-genesis-copy .chapter-verse,.story-chapter .chapter-verse{text-align:left}
+.schedule>.arrival-warning{max-width:660px;box-sizing:border-box;
+  font-size:clamp(14px,1.4vw,17px);line-height:1.6;
+  padding:16px clamp(16px,2vw,22px);text-wrap:pretty}
+@media(max-width:1000px){
+ .timeline.timeline-new{display:block;position:relative;width:100%;max-width:740px;
+   margin:36px auto 0;padding:0 0 0 8px;border:0;gap:0}
+ .timeline.timeline-new::before{content:"";position:absolute;left:15px;top:10px;
+   bottom:38px;right:auto;width:0;height:auto;border:0;border-left:1px solid #aaa49b}
+ .timeline-new .timeline-event{position:relative;display:block;min-width:0;
+   padding:0 0 32px 56px;margin:0}
+ .timeline-new .timeline-event::before{content:"";position:absolute;
+   left:0;top:8px;transform:none;width:14px;height:14px;
+   border:2px solid var(--navy);border-radius:50%;
+   background:#f0eee9;box-sizing:border-box;z-index:2}
+ .timeline-new .moment-icon{position:absolute!important;left:23px!important;top:2px!important;
+   width:23px;height:23px;font-size:16px;line-height:1;
+   display:flex;align-items:center;justify-content:center}
+ .timeline-new .moment-icon svg{width:21px;height:21px;display:block;flex:none}
+ .timeline-new .moment-body,.timeline-new .journey .moment-body{
+   min-width:0;text-align:left;padding:0;background:none}
+ .timeline-new .moment-body strong{display:block;font-size:clamp(17px,2.4vw,23px);
+   line-height:1.3;margin:0 0 7px;white-space:normal}
+ .timeline-new .moment-body h3{font:600 clamp(15px,2vw,18px)/1.35 'DM Sans',Arial,sans-serif;
+   margin:0 0 6px;text-align:left}
+ .timeline-new .moment-body p{font-size:clamp(13px,1.8vw,15px);line-height:1.6;
+   margin:0;text-align:left}
+ .timeline-new .journey .moment-body{padding:13px 15px;
+   background:#e5e3de;border:1px dashed #bcb4a9}
+ .timeline-new .return .moment-body{padding-top:8px}
 }
-@media(max-width:360px){.schedule>.arrival-warning{font-size:13px;padding:12px 9px}.timeline-new .moment-body h3{font-size:14px}}
+@media(max-width:760px){
+ section{padding:62px clamp(20px,5.3vw,28px)}
+ .schedule>h2,.story>h2,#informacion>h2{
+   font-size:clamp(32px,8.2vw,48px);line-height:1.15;letter-spacing:-.04em}
+ .section-head{font-size:10px;letter-spacing:.14em;line-height:1.5}
+ .schedule>.arrival-warning{font-size:clamp(13px,3.55vw,15px);
+   line-height:1.55;padding:15px 13px;margin:18px auto 28px!important}
+ .timeline.timeline-new{margin-top:32px}
+ .timeline-new .timeline-event{padding-bottom:28px;padding-left:52px}
+ .timeline-new .moment-icon{left:22px!important}
+ .timeline-new .moment-body strong{font-size:17px}
+ .timeline-new .moment-body h3{font-size:16px}
+ .timeline-new .moment-body p{font-size:14px}
+ .story-intro{grid-template-columns:minmax(0,1fr);gap:28px}
+ .story-genesis-copy,.story-chapter{width:100%;max-width:100%;
+   text-align:left}
+ .story-genesis-copy>p:not(.eyebrow),.story-chapter>p{
+   font-size:15px;line-height:1.75;text-align:left;
+   margin-left:0;margin-right:0;text-wrap:pretty}
+ .story-genesis-copy>.eyebrow,.story-genesis-copy>h3,
+ .story-chapter>.eyebrow,.story-chapter>h3{text-align:center}
+ .chapter-verse{text-align:left;font-size:15px}
+ .rsvp{gap:24px}
+ .rsvp form{width:100%;max-width:100%;min-width:0;padding:18px}
+ .rsvp input,.rsvp select,.rsvp textarea{font-size:16px;max-width:100%}
+ .gift-copy h2{font-size:clamp(29px,7vw,40px);line-height:1.2}
+ .iban p#iban{font-size:clamp(13px,3.8vw,17px);letter-spacing:0}
+}
+@media(max-width:370px){
+ .schedule>.arrival-warning{font-size:13px;padding:13px 10px}
+ .timeline-new .timeline-event{padding-left:50px}
+}
 </style></head><body><nav><a aria-label="Inicio" class="monogram tree-monogram" href="#inicio"><img alt="Algarrobo con las iniciales CB" class="brand-logo tree-art" src="ilustraciones/arbol-cb-transparente.png"/></a><div class="links"><a href="#ceremonia">Ceremonia y convite</a><a href="#programa">Programa</a><a href="#historia">Nuestra historia</a><a href="#informacion">Información</a><a href="#confirmar">Confirmar</a><a href="#un-detalle">Con cariño</a></div></nav><header class="hero" id="inicio"><div class="hero-content"><div class="eyebrow">Nos casamos</div><h1>Clara<br/>&amp; Bruno</h1><img class="guadalupe-small guadalupe-illustration" src="ilustraciones/guadalupe.png" alt="Nuestra Señora de Guadalupe, ilustración en azul" /><div class="date hero-date">12.12.26</div><p class="hero-verse">«He aquí, yo hago nuevas todas las cosas».</p><p class="hero-verse-ref">(Ap 21,5)</p><p class="lead">Nos hace mucha ilusión compartir este día tan especial con vosotros.</p><a class="btn" href="#confirmar">Confirmar asistencia ↓</a></div><img alt="Clara y Bruno en la moto roja junto al mar" class="hero-photo" fetchpriority="high" src="fotos/moto-original.jpg"/></header><section id="ceremonia" class="locations-section"><div class="section-head">01 / Los lugares</div><div class="places">
 <article class="place"><p class="eyebrow">12:30 h · Ceremonia religiosa</p><h2>La ceremonia</h2><img alt="Ilustración original de la Capilla Castrense" class="place-illustration" src="ilustraciones/capilla.png"/><h3 class="place-title">Capilla Castrense de la Ciudadela</h3><p class="place-intro">En una capilla histórica, rodeada por los jardines de la Ciutadella, comenzaremos juntos este día tan especial.</p><p class="venue-address">Plaça de Joan Fiveller, s/n · Parc de la Ciutadella · Barcelona</p><a class="map" href="https://maps.app.goo.gl/QfcNtTgrTn4Fctf4A" rel="noopener noreferrer" target="_blank">Ver en Google Maps ↗</a><div class="access-details"><h3>Cómo llegar y aparcar</h3><p><strong>En coche:</strong> entrad al parque y, en la barrera de control, avisad por el interfono de que venís a la boda.</p><p><strong>En metro:</strong> Barceloneta (L4) o Arc de Triomf (L1).</p></div><p class="arrival-warning"><strong>Os rogamos llegar a las 12:15 h.</strong><br/>La ceremonia comenzará puntualmente a las 12:30 h.</p></article>
 <article class="place"><p class="eyebrow">Después de la ceremonia · Celebración</p><h2>El convite</h2><img alt="Ilustración original de Mas Vidrier" class="place-illustration" src="ilustraciones/mas-vidrier.png"/><h3 class="place-title">Mas Vidrier</h3><p class="place-intro">Una masía histórica entre jardines y naturaleza, donde continuaremos la celebración y compartiremos el resto del día.</p><p class="venue-address">Baixada de la Masia, 1 · 08629 Torrelles de Llobregat</p><a class="map" href="https://maps.app.goo.gl/z5jBjhpJZyK3ftVcA" rel="noopener noreferrer" target="_blank">Ver en Google Maps ↗</a><div class="access-details"><h3>Cómo llegar y aparcar</h3><p><strong>En coche:</strong> hay aparcamiento para invitados dentro de la finca.</p><p><strong>En autocar:</strong> traslado desde la capilla tras la ceremonia y regreso aproximadamente a las 23:15 h. Confirmad vuestra plaza en el formulario.</p></div><p class="venue-note">Aperitivo previsto entre las 14:30 y las 15:00 h (horario orientativo).</p></article>
