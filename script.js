@@ -6,7 +6,7 @@ const alergiaPlusEstado=document.getElementById('alergiaPlusEstado');
 const form=document.getElementById('rsvpForm');
 const estado=document.getElementById('estado');
 // Se activará exclusivamente cuando se configure la URL real /exec de Apps Script.
-const APPS_SCRIPT_URL='PEGAR_URL_DE_APPS_SCRIPT_AQUI';
+const APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbwPZp8Kp5Kw5uzvoan2vgbmtRerBSqpllzqvyNWUORUXtU653jsRwYAO2wK2Tvhep55/exec";
 const byId=id=>document.getElementById(id);
 function refresh(){
  const attending=asiste.value==='si', companion=attending&&plus.value==='si', usingBus=attending&&bus.value==='si';
