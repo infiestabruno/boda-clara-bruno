@@ -30,28 +30,28 @@ function refresh(){
 form.addEventListener('submit',e=>{
  e.preventDefault();
  const name=byId('nombre').value.trim().replace(/\\s+/g,' ');
- if(name.length<3){byId('nombre').setCustomValidity('Escribe tu nombre y apellidos.');byId('nombre').reportValidity();return;}else byId('nombre').setCustomValidity('');
+ if(name.length<3){byId('nombre').setCustomValidity((window.cbT?.('Escribe tu nombre y apellidos.')||'Escribe tu nombre y apellidos.'));byId('nombre').reportValidity();return;}else byId('nombre').setCustomValidity('');
  if(!form.reportValidity())return;
  if(asiste.value==='si'){
-  if(!plus.value||!bus.value||!alergiaEstado.value){estado.textContent='Responde conscientemente a todas las preguntas.';return;}
-  if(plus.value==='si'&&(!alergiaPlusEstado.value||byId('acompanante').value.trim().length<3)){estado.textContent='Completa los datos del acompañante.';return;}
-  if((alergiaEstado.value==='si'&&!byId('alergias').value.trim())||(plus.value==='si'&&alergiaPlusEstado.value==='si'&&!byId('alergiasPlus').value.trim())){estado.textContent='Describe las alergias indicadas.';return;}
+  if(!plus.value||!bus.value||!alergiaEstado.value){estado.textContent=(window.cbT?.('Responde conscientemente a todas las preguntas.')||'Responde conscientemente a todas las preguntas.');return;}
+  if(plus.value==='si'&&(!alergiaPlusEstado.value||byId('acompanante').value.trim().length<3)){estado.textContent=(window.cbT?.('Completa los datos del acompañante.')||'Completa los datos del acompañante.');return;}
+  if((alergiaEstado.value==='si'&&!byId('alergias').value.trim())||(plus.value==='si'&&alergiaPlusEstado.value==='si'&&!byId('alergiasPlus').value.trim())){estado.textContent=(window.cbT?.('Describe las alergias indicadas.')||'Describe las alergias indicadas.');return;}
  }
- if(!APPS_SCRIPT_URL.startsWith('https://script.google.com/macros/s/')||!APPS_SCRIPT_URL.endsWith('/exec')){estado.textContent='Formulario en preparación. No se ha enviado ni guardado ninguna respuesta.';return;}
+ if(!APPS_SCRIPT_URL.startsWith('https://script.google.com/macros/s/')||!APPS_SCRIPT_URL.endsWith('/exec')){estado.textContent=(window.cbT?.('Formulario en preparación. No se ha enviado ni guardado ninguna respuesta.')||'Formulario en preparación. No se ha enviado ni guardado ninguna respuesta.');return;}
  const seats=(asiste.value==='si'&&bus.value==='si')?Number(byId('plazas').value):0;
  const trip=byId('trayecto').value;
- if(bus.value==='si'&&(seats<1||seats> (plus.value==='si'?2:1)||!trip)){estado.textContent='Comprueba las plazas y el trayecto del autocar.';return;}
+ if(bus.value==='si'&&(seats<1||seats> (plus.value==='si'?2:1)||!trip)){estado.textContent=(window.cbT?.('Comprueba las plazas y el trayecto del autocar.')||'Comprueba las plazas y el trayecto del autocar.');return;}
  byId('plazasIda').value=seats&&(trip==='ida'||trip==='ida-vuelta')?seats:0;
  byId('plazasVuelta').value=seats&&(trip==='vuelta'||trip==='ida-vuelta')?seats:0;
  byId('nonce').value=crypto.randomUUID?crypto.randomUUID():String(Date.now());
  form.action=APPS_SCRIPT_URL;
  form.submit();
- estado.textContent='Se ha abierto la página de confirmación de Google. Comprueba que indique que los datos se han guardado.';
+ estado.textContent=(window.cbT?.('Se ha abierto la página de confirmación de Google. Comprueba que indique que los datos se han guardado.')||'Se ha abierto la página de confirmación de Google. Comprueba que indique que los datos se han guardado.');
 });
 const copy=document.querySelector('.copy');
 if(copy)copy.addEventListener('click',async()=>{
- try{await navigator.clipboard.writeText('ES5515830001189104760915');copy.textContent='¡IBAN copiado!'}
- catch(e){copy.textContent='Selecciona el IBAN para copiarlo'}
+ try{await navigator.clipboard.writeText('ES5515830001189104760915');copy.textContent=(window.cbT?.('¡IBAN copiado!')||'¡IBAN copiado!')}
+ catch(e){copy.textContent=(window.cbT?.('Selecciona el IBAN para copiarlo')||'Selecciona el IBAN para copiarlo')}
 });
 
 
