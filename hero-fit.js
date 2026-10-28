@@ -25,7 +25,7 @@
   let low=22,high=160;
   for(let i=0;i<15;i++){
    const mid=(low+high)/2;
-   if(widthAt(mid)<=available*.87)low=mid;else high=mid;
+   if(widthAt(mid)<=available*.75)low=mid;else high=mid;
   }
   heading.style.setProperty('--hero-name-size',Math.max(22,Math.min(160,low)).toFixed(2)+'px');
   // Validate against actual glyph layout once, including font fallback.
